@@ -1,6 +1,7 @@
+var server = require('http').createServer();
 var express = require('express');
 var bodyParser = require('body-parser');
-var ws = new require('ws').Server({ port: process.env.WS_PORT || 9999 });
+var ws = new require('ws').Server({ server: server });
 var app = express();
 
 app.use(bodyParser.json());
@@ -21,4 +22,5 @@ app.post('/log', function (req, res) {
   res.json({ ok: 1 });
 });
 
-app.listen(process.env.SERVER_PORT || 5555);
+server.on('request', app);
+server.listen(process.env.PORT || 5555);
